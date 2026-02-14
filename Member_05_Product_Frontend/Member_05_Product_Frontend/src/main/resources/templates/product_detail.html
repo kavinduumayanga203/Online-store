@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title th:text="${product.name} + ' - LuxeStore'">Product Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Unified Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" th:href="@{/}">Home</a>
+        </div>
+
+        <a class="navbar-brand" th:href="@{/}">LuxeStore</a>
+
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link" th:href="@{/cart}">Cart</a>
+        </div>
+    </nav>
+
+    <div class="container my-5 fade-in">
+        <div class="card shadow-lg border-0 rounded overflow-hidden">
+            <div class="row no-gutters">
+
+                <!-- Exact size image column -->
+                <div class="col-md-6 bg-light d-flex align-items-center justify-content-center"
+                    style="min-height: 500px;">
+                    <img th:src="@{'/product-images/' + ${product.id} + '/' + ${product.imageUrl}}"
+                        class="img-fluid pr-3" style="max-height: 450px; object-fit: contain;" alt="Product Image"
+                        onerror="this.onerror=null;this.src='https://via.placeholder.com/500?text=No+Image';">
+                </div>
+
+                <!-- Details column -->
+                <div class="col-md-6">
+                    <div class="card-body p-5 d-flex flex-column h-100">
+                        <div class="mb-auto">
+                            <small class="text-muted text-uppercase font-weight-bold letter-spacing-1">Product
+                                Details</small>
+                            <h1 class="mt-2 font-weight-bold" style="color: #2d3748;" th:text="${product.name}">Product
+                                Name</h1>
+
+                            <div class="my-4">
+                                <span class="h2 font-weight-bold text-primary"
+                                    th:text="'$' + ${product.price}">$99.99</span>
+
+                            </div>
+
+                            <p class="card-text text-secondary" style="font-size: 1.1rem; line-height: 1.8;"
+                                th:text="${product.description}">
+                                This is a great product description that gives details about the item.
+                            </p>
+                        </div>
+
+                        <div class="mt-5">
+                            <div sec:authorize="!hasRole('ADMIN')">
+                                <a th:href="@{/addToCart/{id}(id=${product.id})}"
+                                    class="btn btn-primary btn-lg btn-block shadow text-uppercase letter-spacing-1 py-3"
+                                    style="border-radius: 50px;">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+                                </a>
+                            </div>
+
+                            <div sec:authorize="hasRole('ADMIN')" class="text-center">
+                                <p class="text-muted">Admin View: <a href="#" class="text-danger">Edit details in
+                                        dashboard</a></p>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <a th:href="@{/}" class="text-muted font-weight-bold small"
+                                    style="text-decoration: none;">
+                                    <i class="fas fa-arrow-left mr-1"></i> Back to Shop
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/theme.js}"></script>
+</body>
+
+</html>
